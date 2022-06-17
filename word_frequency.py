@@ -1,3 +1,5 @@
+import string
+
 STOP_WORDS = [
     'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
     'i', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'were',
@@ -6,9 +8,43 @@ STOP_WORDS = [
 
 
 def print_word_freq(file):
-    """Read in `file` and print out the frequency of words in that file."""
-    pass
+    text = open_and_read_file(file)
+    filtered_words = clean_and_filter_text(text)
+    word_frequency_object = build_word_frequency_object(filtered_words)
+    printing_final_count(word_frequency_object)
 
+
+def open_and_read_file(file):
+    with open(file) as open_file:
+        text = open_file.read()
+    return text
+
+
+def clean_and_filter_text(text):
+    lowered_text = text.lower().replace("—", " ").replace("-", " ")
+    unpunctuated_text = lowered_text.translate(
+        str.maketrans('', '', string.punctuation.replace("'", "")))
+    word_array = unpunctuated_text.split()
+    filtered_words = [word for word in word_array if word not in STOP_WORDS]
+    return filtered_words
+
+
+def build_word_frequency_object(filtered_words):
+    word_frequency_object = {}
+    for word in filtered_words:
+        if word in word_frequency_object:
+            word_frequency_object[word] = word_frequency_object[word] + 1
+        else:
+            word_frequency_object.update({word: 1})
+    return word_frequency_object
+
+
+def printing_final_count(word_frequency_object):
+    word_frequency_object = {k: v for k, v in sorted(
+        word_frequency_object.items(), key=lambda item: item[1], reverse=True
+    )}
+    for key, value in word_frequency_object.items():
+        print(f'{key.rjust(20)} | {value} {value * "*"}')
 
 if __name__ == "__main__":
     import argparse
