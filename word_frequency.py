@@ -21,13 +21,12 @@ def open_and_read_file(file):
 
 
 def clean_and_filter_text(text):
-    lowered_text = text.lower().replace("—", " ").replace("-", " ")
+    lowered_text = text.lower().replace("—", " ").replace("-", " ").replace('“', ' ').replace('”', ' ')
     unpunctuated_text = lowered_text.translate(
         str.maketrans('', '', string.punctuation.replace("'", "")))
     word_array = unpunctuated_text.split()
     filtered_words = [word for word in word_array if word not in STOP_WORDS]
     return filtered_words
-
 
 def build_word_frequency_object(filtered_words):
     word_frequency_object = {}
@@ -40,13 +39,21 @@ def build_word_frequency_object(filtered_words):
 
 
 def printing_final_count(word_frequency_object):
-    word_frequency_object = {k: v for k, v in sorted(
+    print(word_frequency_object)
+    word_frequency_object_key = {k: v for k, v in sorted(
         word_frequency_object.items(), key=lambda item: item[0]
     )}
-    word_frequency_object = {k: v for k, v in sorted(
-        word_frequency_object.items(), key=lambda item: item[1], reverse=True
+    # print("************")
+    # print(word_frequency_object)
+    # print(word_frequency_object_key)
+    word_frequency_object_value = {k: v for k, v in sorted(
+        word_frequency_object_key.items(), key=lambda item: item[1], reverse=True
     )}
-    for key, value in word_frequency_object.items():
+    # print("************")
+    # print(word_frequency_object)
+    # print(word_frequency_object_key)
+    # print(word_frequency_object_value)
+    for key, value in word_frequency_object_value.items():
         print(f'{key.rjust(20)} | {value} {value * "*"}')
 
 if __name__ == "__main__":
