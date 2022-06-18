@@ -41,6 +41,9 @@ def build_word_frequency_object(filtered_words):
 
 def printing_final_count(word_frequency_object):
     word_frequency_object = {k: v for k, v in sorted(
+        word_frequency_object.items(), key=lambda item: item[0]
+    )}
+    word_frequency_object = {k: v for k, v in sorted(
         word_frequency_object.items(), key=lambda item: item[1], reverse=True
     )}
     for key, value in word_frequency_object.items():
